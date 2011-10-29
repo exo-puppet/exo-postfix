@@ -15,28 +15,27 @@ sender_canonical_maps = regexp:/etc/postfix/sender_regexp
 delay_warning_time = 4h
 
 readme_directory = no
-virtual_alias_maps = hash:/etc/postfix/virtual
-sender_bcc_maps = hash:/etc/postfix/bcc
+#virtual_alias_maps = hash:/etc/postfix/virtual
+#sender_bcc_maps = hash:/etc/postfix/bcc
 mailbox_command = /usr/bin/procmail-wrapper -o -a $DOMAIN -d $LOGNAME
-home_mailbox = Maildir/
+#home_mailbox = Maildir/
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_security_options = noanonymous
 broken_sasl_auth_clients = yes
 smtpd_recipient_restrictions = permit_mynetworks permit_sasl_authenticated reject_unauth_destination
-#mydestination = $myhostname, localhost.$mydomain, localhost
-#myhostname = sd-17621
-#myorigin = yourdomain.tld
-#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mydestination = localhost
+myorigin = /etc/mailname
+relayhost =
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128mailbox_size_limit = 0
 mailbox_size_limit = 0
+recipient_delimiter = +
 smtpd_client_restrictions = permit_inet_interfaces
 
 alias_maps = hash:/etc/postfix/aliases
 alias_database = hash:/etc/postfix/aliases
-#relayhost =
-recipient_delimiter = +
 
-inet_interfaces = 127.0.0.1
-inet_protocols = all
+inet_interfaces = all
+inet_protocols = ipv4
 #local_transport = error:local delivery is disabled
 
 # TLS parameters
