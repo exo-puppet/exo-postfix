@@ -44,7 +44,7 @@ class postfix {
             notify  => Service["postfix"],
 		    owner   => root,
 		    group   => root,            
-            content => "$fqdn\n";
+            content => "$::fqdn\n";
         "/etc/postfix/aliases":
             require => Package["postfix"],
 		    owner   => root,
@@ -103,14 +103,14 @@ class postfix {
 
         file { 
             "/etc/postfix/master.cf":
-                source => [ "puppet:///modules/postfix/$name/master.cf-$operatingsystem", "puppet:///modules/postfix/$name/master.cf" ],
+                source => [ "puppet:///modules/postfix/$name/master.cf-$::operatingsystem", "puppet:///modules/postfix/$name/master.cf" ],
 			    owner   => root,
 			    group   => root,                            
                 links  => follow;
             "/etc/postfix/main.cf":
 			    owner   => root,
 			    group   => root,                       
-                source => "puppet:///modules/postfix/$name/main.cf";
+                content => template("postfix/$name/main.cf.erb");
         } # file
     } # define post_files
 
