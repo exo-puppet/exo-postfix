@@ -10,17 +10,8 @@ class postfix {
 
     include puppet
 
-    # send prod boxes email to root@ and preprod to root-preprod@
-    $root_mail = $envSilo ? {
-        prod    => "root@$lsbProvider.com",
-        default => "root-preprod@$lsbProvider.com",
-    }
-
-    # default is root, which is set above by $root_mail
-    $postmaster_mail = $envSilo ? {
-        prod    => "postmaster@$lsbProvider.com",
-        default => "root",
-    }
+    $root_mail = "root"
+    $postmaster_mail = "root"
 
     # 20090826 - GH
     # How we are handling this class and its subclasses is not consistent
@@ -202,7 +193,7 @@ class postfix::pflogsumm inherits postfix {
     package { "postfix-pflogsumm": }
 
     cron { "pflogsumm_daily":
-        command => "/usr/sbin/pflogsumm -d yesterday /var/log/maillog 2>&1 |/bin/mail -s \"[Daily mail stats for `uname -n`]\" postmast@$lsbProvider.com",
+        command => "/usr/sbin/pflogsumm -d yesterday /var/log/maillog 2>&1 |/bin/mail -s \"[Daily mail stats for `uname -n`]\" root",
         user    => "root",
         hour    => "0",
         minute  => "10",
