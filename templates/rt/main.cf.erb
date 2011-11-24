@@ -4,8 +4,8 @@
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
 # The default is to use the fully-qualified domain name from gethostname()
-myhostname = <%= scope.lookupvar('fqdn') %>
-mydomain = <%= scope.lookupvar('domain') %>
+myhostname = <%= scope.lookupvar('::fqdn') %>
+mydomain = <%= scope.lookupvar('::domain') %>
 mydestination = localhost.$mydomain, localhost, $myhostname
 myorigin = <%= scope.lookupvar('domain') %>
 relay_domains = $mydestination, $mynetworks
