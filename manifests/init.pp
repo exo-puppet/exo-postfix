@@ -3,27 +3,14 @@
 # This module manages postfix, our defacto MTA
 #
 # Requires:
-#   class puppet
 #   $postfix_type must be set for systems that are not your basic mail client
 #
 class postfix {
 
-    include puppet
-
     $root_mail = "root"
     $postmaster_mail = "root"
 
-    # 20090826 - GH
-    # How we are handling this class and its subclasses is not consistent
-    # with our code. Instead of setting the $postfix_type variable in the
-    # node definition, we should just include postfix::foo and combine
-    # postfix::client into the base postfix class
-    #
-    # default class is that of a client
-    case $postfix_type {
-        rt:         { include postfix::rt }
-        default:    { include postfix::client }
-    } # case $postfix_type
+    include postfix::client
     
     package {
         "postfix": ;
@@ -56,10 +43,6 @@ class postfix {
     } # file
 
     exec {
-#        "postalias":
-#            command     => "/usr/sbin/postalias /etc/postfix/aliases",
-#            require     => File["/etc/postfix/aliases"],
-#            refreshonly => true;
         "postmap-roleaccount_exceptions":
             command     => "/usr/sbin/postmap /etc/postfix/roleaccount_exceptions",
 		    user   => root,
@@ -130,7 +113,6 @@ class postfix {
         exec { "postalias-$name":
             command     => "/usr/sbin/postalias $myaliasfile",
             require     => [ Package["postfix"], File["$myaliasfile"]],
-            creates     => "${puppet::semaphores}/postalias-$name",
 		    user   => root,
 		    group   => root,                        
         } # exec
@@ -155,35 +137,6 @@ class postfix::client inherits postfix {
         content => template("postfix/client-sender_regexp.erb"),
     }
 } # class postfix::client
-
-# Class: postfix::rt
-#
-# used by systems running RT
-#
-class postfix::rt inherits postfix {
-
-    include generic
-
-    # we want mail stats for RT nodes
-    include postfix::pflogsumm
-
-    realize Generic::Mkuser[rt]
-
-    post_files { "rt": }
-    postalias { "rt": aliasfile => "/home/rt/aliases" }
-
-    file { "/home/rt/aliases": 
-        source  => "puppet:///modules/rt/aliases",
-        owner   => "rt",
-        group   => "rt",
-        ensure  => present,
-        require => Generic::Mkuser[rt],
-    } # file
-
-#    Exec["postalias"] {
-#        require +> File["/home/rt/aliases"],
-#    } # Exec
-} # class postfix::rt
 
 #
 # pflogsumm - gives us mail stats
