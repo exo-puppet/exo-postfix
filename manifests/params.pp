@@ -9,11 +9,12 @@ class postfix::params {
 	}
 	info ("postfix ensure mode = $ensure_mode")
 	
-	$package_name		= [ "postfix" ]
 
 	case $::operatingsystem {
 		/(Ubuntu|Debian)/: {
-			$service_name		= "postfix"
+            $package_name       = ["postfix", "bsd-mailx"]
+            $service_name       = "postfix"
+            $configuration_dir  = "/etc/postfix"
 		}
 		default: {
 			fail ("The ${module_name} module is not supported on $::operatingsystem")
