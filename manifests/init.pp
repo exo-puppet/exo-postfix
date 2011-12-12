@@ -24,7 +24,7 @@
 # == Examples
 #
 #   class { "postfix":
-#       lastversion => false,
+#       lastversion => true,
 #   }
 #
 ################################################################################
