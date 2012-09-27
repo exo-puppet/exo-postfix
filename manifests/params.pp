@@ -2,13 +2,13 @@
 #
 # This class manage the postfix parameters for different OS
 class postfix::params {
-	
+
 	$ensure_mode = $postfix::lastversion ? {
 		true => latest,
 		default => present
 	}
 	info ("postfix ensure mode = $ensure_mode")
-	
+
 
 	case $::operatingsystem {
 		/(Ubuntu|Debian)/: {
