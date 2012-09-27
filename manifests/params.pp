@@ -12,7 +12,7 @@ class postfix::params {
 
 	case $::operatingsystem {
 		/(Ubuntu|Debian)/: {
-            $package_name       = ["postfix", "bsd-mailx"]
+            $package_name       = ["postfix"]
             $service_name       = "postfix"
             $configuration_dir  = "/etc/postfix"
 		}
