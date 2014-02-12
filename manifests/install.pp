@@ -7,12 +7,11 @@ class postfix::install {
       case $::lsbdistrelease {
         /(10.04)/ : {
           # exim was the default MTA with Ubuntu 10.04
-          package { 'mail2remove':
-            ensure => purged,
-            name   => [
+          package { [
               'exim4',
               'exim4-config',
-              'exim4-daemon-light'],
+              'exim4-daemon-light']:
+            ensure => purged,
           }
         }
       }
