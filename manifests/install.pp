@@ -31,5 +31,10 @@ class postfix::install {
     require => [
       Exec['repo-update'],
       Package['mail']],
+
+  } ->
+  # Tool to compute postfix statistics
+  repo::package { 'pflogsumm':
+    ensure  => $postfix::params::ensure_mode,
   }
 }
