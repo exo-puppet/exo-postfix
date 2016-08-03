@@ -36,6 +36,6 @@ class postfix (
     fail('lastversion must be true or false')
   }
 
-  include repo
+  include stdlib
   include postfix::params, postfix::install, postfix::config, postfix::service
 }
