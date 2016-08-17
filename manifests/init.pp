@@ -37,7 +37,6 @@ class postfix ($lastversion = false) {
 
   include stdlib
   include postfix::params
-  # include postfix::params, postfix::install, postfix::config, postfix::service
 
   # Install packages
   case $::operatingsystem {
@@ -90,6 +89,6 @@ class postfix ($lastversion = false) {
     name       => $postfix::params::service_name,
     hasstatus  => true,
     hasrestart => true,
-    require    => File[$postfix::params::configuration_dir],
+    require    => [Package['mail-pkg'],File[$postfix::params::configuration_dir]],
   }
 }
