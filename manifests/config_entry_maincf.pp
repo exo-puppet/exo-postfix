@@ -16,7 +16,7 @@ define postfix::config_entry_maincf ($value = undef) {
       line      => "${key} = ${value}",
       match     => "^#? *${key} *=.*$",
       multiple  => false,
-      require   => Class['postfix::install'],
+      require   => Package['mail-pkg'],
       notify    => Service['postfix'],
     }
   } else {
@@ -26,7 +26,7 @@ define postfix::config_entry_maincf ($value = undef) {
       line      => "#${key} =",
       match     => "^#? *${key} *=.*$",
       multiple  => true,
-      require   => Class['postfix::install'],
+      require   => Package['mail-pkg'],
       notify    => Service['postfix'],
     }
   }
